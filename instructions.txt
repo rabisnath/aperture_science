@@ -1,0 +1,27 @@
+We are working on a Python package for algorithmic trading.
+
+The package has 11 modules:
+
+1. Data
+2. Indicators
+3. Market Analysis
+4. Historian
+5. Modeling
+6. Strategy
+7. Testing
+8. Portfolio Manager
+9. Back of House
+10. Reporting
+11. Data Viz
+
+The other key component of the package is a pair of scripts, one that will run every 5 minutes, and one that will run every 24 hours.
+
+The script for the 5 minute loop will take care of paper trading and live trading various strategies and recording the results.
+
+The script for the daily loop will mostly be responsible for the activities of the portfolio manager. 
+The portfolio manager will look at saved market conditions data that the historian will produce using functions from the market analysis module as well as the performance of all the strategies that have been paper trading and use these two datasets as inputs to an xgboost model. 
+The xgboost model will look at the current market conditions and predict which strategies will perform the best.
+
+Here in this workspace, you have access to a draft version of all 11 modules and the 2 scripts, as well as some other design documents.
+
+I need your help: testing, revising, documenting, and deploying this Python package.

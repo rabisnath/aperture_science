@@ -1,0 +1,29 @@
+flowchart TD
+    subgraph "5-Minute Loop"
+        A[DataLoader] -->|Fetch Latest Data| B[MarketAnalyzer]
+        B -->|Analyze Conditions| C[Historian]
+        C -->|Store Conditions| D[(Storage)]
+        
+        A -->|Market Data| E[Strategies]
+        E -->|Generate Signals| F[PortfolioManager]
+        
+        F -->|Paper Trade Signals| C
+        F -->|Live Trade Signals| G[RiskEngine]
+        G -->|Approved Trades| H[LiveTrader]
+        H -->|Execution Results| C
+        
+        C -->|Update Records| I[ReportGenerator]
+        I -->|Notifications| J[SMS/Email]
+    end
+
+    subgraph "Daily Loop"
+        K[(Storage)] -->|Load History| L[Historian]
+        L -->|Market Conditions| M[StrategySelector]
+        L -->|Strategy Performance| M
+        
+        M -->|Train Model| N[XGBoost Model]
+        N -->|Strategy Predictions| O[PortfolioManager]
+        
+        O -->|Update Live Roster| P[ReportGenerator]
+        P -->|Daily Report| Q[SMS/Email]
+    end
