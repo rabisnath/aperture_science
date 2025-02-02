@@ -13,61 +13,8 @@ pip install -r requirements.txt
 
 2. Run the sample paper trading script:
 ```bash
-python sample_usage.py
+python demo.py
 ```
-
-Or customize via environment variables:
-```bash
-export TRADING_SYMBOLS="BTCUSDT,ETHUSDT,SOLUSDT"  # Trading pairs
-export INITIAL_CAPITAL="50000.0"                  # Starting capital in USDT
-export MAX_POSITION_SIZE="0.05"                   # Maximum position size (5% of capital)
-python sample_usage.py
-```
-
-## Interactive Demo
-
-Explore the package features through our Jupyter notebook:
-```bash
-jupyter notebook demo.ipynb
-```
-
-The notebook provides a guided tour of:
-- Data acquisition and preprocessing
-- Market analysis tools
-- Strategy implementation
-- Portfolio management
-- Live trading setup
-
-## Features
-
-- **Multiple Trading Strategies**:
-  - PCA-based statistical arbitrage
-  - Mean reversion
-  - Momentum
-  - Hybrid approaches
-
-- **Real-time Analysis**:
-  - Market condition monitoring
-  - Risk management
-  - Performance tracking
-
-- **Production Ready**:
-  - Paper trading support
-  - Live trading capability
-  - Comprehensive logging
-  - Performance monitoring
-
-## Project Structure
-
-```
-.
-├── data/               # Data acquisition and preprocessing
-├── strategy/           # Trading strategy implementations
-├── portfolio_manager/  # Portfolio management and optimization
-├── risk/              # Risk management tools
-├── back_of_house/     # Trade execution and monitoring
-├── scripts/           # Utility scripts
-└── tests/             # Test suite
 ```
 
 ## Development
