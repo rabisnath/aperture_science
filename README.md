@@ -1,6 +1,6 @@
 # Algorithmic Trading Package
 
-A comprehensive algorithmic trading package with support for multiple strategies, real-time market analysis, and paper trading.
+A comprehensive algorithmic trading package for cryptocurrency trading using Alpaca's API.
 
 ## Quick Start - Paper Trading
 
@@ -11,11 +11,51 @@ Get started with paper trading in minutes:
 pip install -r requirements.txt
 ```
 
-2. Run the sample paper trading script:
+2. Set up your API credentials:
+
+   Option 1 - Environment Variables:
+   ```bash
+   # Add these to your shell profile (~/.bashrc, ~/.zshrc, etc.)
+   export ALPACA_API_KEY="your_alpaca_key"
+   export ALPACA_API_SECRET="your_alpaca_secret"
+   ```
+
+   Option 2 - .env File:
+   ```bash
+   # Create a .env file in the project root
+   echo "ALPACA_API_KEY=your_alpaca_key" >> .env
+   echo "ALPACA_API_SECRET=your_alpaca_secret" >> .env
+   ```
+
+   You can get your Alpaca API credentials by:
+   1. Creating an account at https://app.alpaca.markets/signup
+   2. Going to Paper Trading in your dashboard
+   3. Generating API keys for paper trading
+
+   Note: Make sure to keep your API credentials secure and never commit them to version control.
+
+3. Run the sample paper trading script:
 ```bash
 python demo.py
 ```
-```
+
+## Features
+
+- Real-time cryptocurrency trading using Alpaca's API
+- Multiple trading strategies (Mean Reversion, Momentum, PCA)
+- Advanced market analysis and indicators
+- Risk management and portfolio optimization
+- Paper trading support for testing strategies
+- Comprehensive test suite
+
+## Trading Pairs
+
+The package supports all cryptocurrency pairs available on Alpaca, including:
+- BTC/USD
+- ETH/USD
+- And more...
+
+Trading pairs use Alpaca's standard format (e.g., "BTC/USD" instead of "BTCUSD").
 
 ## Development
 
@@ -36,6 +76,13 @@ pip install -r requirements-dev.txt
 python -m unittest test_package.py
 ```
 
+The test suite includes:
+- Data acquisition and preprocessing tests
+- Market analysis tests
+- Strategy implementation tests
+- Portfolio management tests
+- End-to-end workflow tests
+
 ## Production Deployment
 
 For production deployment, we provide scripts to set up:
@@ -50,7 +97,8 @@ See `scripts/` directory for details.
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Submit a pull request
+4. Run the test suite
+5. Submit a pull request
 
 ## License
 

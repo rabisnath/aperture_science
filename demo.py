@@ -12,6 +12,10 @@ from datetime import datetime, timedelta
 import pandas as pd
 import numpy as np
 from typing import Dict, List, Optional
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Configure logging
 logging.basicConfig(
@@ -29,12 +33,23 @@ def check_dependencies():
         from portfolio_manager import PortfolioManager
         from back_of_house import LiveTrader
         from risk import RiskEngine
-        from trading_types import Config
+        from trading_types import Config, BrokerType
         return True
     except ImportError as e:
         logger.error(f"Missing dependency: {str(e)}")
         logger.error("Please install required packages using: pip install -r requirements.txt")
         return False
+
+def check_credentials():
+    """Check if required API credentials are set."""
+    alpaca_key = os.environ.get('ALPACA_API_KEY')
+    alpaca_secret = os.environ.get('ALPACA_API_SECRET')
+    
+    if not alpaca_key or not alpaca_secret:
+        logger.error("Alpaca API credentials not found in environment variables")
+        logger.error("Please set ALPACA_API_KEY and ALPACA_API_SECRET in your .env file")
+        return False
+    return True
 
 def print_section(title):
     """Print a section header."""
@@ -45,6 +60,88 @@ def print_section(title):
 def pause_for_user():
     """Pause for user to read output."""
     input("\nPress Enter to continue...\n")
+
+def demo_data_loading():
+    """Demonstrate data loading capabilities."""
+    print_section("Data Loading Demo")
+    
+    from data import DataLoader
+    from trading_types import Config
+    
+    # Initialize with default config
+    config = Config()
+    data_loader = DataLoader(config)
+    
+    # Demo data loading
+    print("Loading historical data...")
+    try:
+        btc_data = data_loader.get_historical_data(
+            symbol="BTC/USD",
+            interval="5m",
+            start_time=datetime.now() - timedelta(hours=1)
+        )
+        print("\nBTC/USD last 5 rows:")
+        print(btc_data.tail())
+        
+        eth_data = data_loader.get_historical_data(
+            symbol="ETH/USD",
+            interval="5m",
+            start_time=datetime.now() - timedelta(hours=1)
+        )
+        print("\nETH/USD last 5 rows:")
+        print(eth_data.tail())
+        
+    except Exception as e:
+        print(f"Error loading data: {str(e)}")
+
+def demo_strategy():
+    """Demonstrate strategy implementation."""
+    print_section("Strategy Demo")
+    
+    from strategy import StrategyConfig, StrategyFactory
+    from trading_types import Config
+    
+    config = Config()
+    
+    # Create a mean reversion strategy
+    mean_rev_config = StrategyConfig(
+        name="demo_mean_rev",
+        type="mean_reversion",
+        parameters={
+            'entry_threshold': 2.0,
+            'exit_threshold': 0.5,
+            'lookback_period': 20
+        },
+        symbols=["BTC/USD", "ETH/USD"]
+    )
+    
+    strategy = StrategyFactory.create(mean_rev_config, config)
+    print(f"Created strategy: {strategy.name}")
+    print(f"Type: {strategy.type}")
+    print(f"Parameters: {strategy.parameters}")
+    print(f"Symbols: {strategy.symbols}")
+
+def demo_portfolio():
+    """Demonstrate portfolio management."""
+    print_section("Portfolio Management Demo")
+    
+    from portfolio_manager import PortfolioManager
+    from trading_types import Config
+    
+    config = Config(
+        initial_capital=100000.0,
+        max_position_size=0.1
+    )
+    
+    portfolio = PortfolioManager(config)
+    print(f"Initial capital: ${config.initial_capital:,.2f}")
+    print(f"Max position size: {config.max_position_size*100}%")
+    
+    # Show current allocations
+    allocations = portfolio.get_allocations()
+    print("\nCurrent allocations:")
+    for strategy_id, allocation in allocations.items():
+        print(f"{strategy_id}: {allocation*100:.1f}%")
 
 def demo_data_acquisition():
     """Demonstrate data acquisition and preprocessing."""
@@ -63,7 +160,7 @@ def demo_data_acquisition():
     preprocessor = DataPreprocessor()
     
     # Fetch some market data
-    symbols = ["BTCUSDT", "ETHUSDT"]
+    symbols = ["BTC/USD", "ETH/USD"]
     print(f"\nFetching 5-minute data for {symbols}...")
     try:
         market_data = loader.get_market_data(
@@ -80,11 +177,11 @@ def demo_data_acquisition():
         raise ValueError(f"Missing data for symbols: {missing}")
     
     print("\nSample of BTC market data:")
-    print(market_data["BTCUSDT"].head())
+    print(market_data["BTC/USD"].head())
     
     print("\nCalculating returns and creating features...")
     try:
-        returns = preprocessor.calculate_returns(market_data["BTCUSDT"])
+        returns = preprocessor.calculate_returns(market_data["BTC/USD"])
         print("\nSample returns:")
         print(returns.head())
     except Exception as e:
@@ -299,6 +396,10 @@ def main():
     
     # Check dependencies first
     if not check_dependencies():
+        sys.exit(1)
+    
+    # Check credentials
+    if not check_credentials():
         sys.exit(1)
     
     pause_for_user()

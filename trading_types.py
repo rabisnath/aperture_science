@@ -6,10 +6,23 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Dict, List, Optional, Union
 import numpy as np
+from enum import Enum
+
+class BrokerType(Enum):
+    """Supported broker types"""
+    ALPACA = "alpaca"
+    BINANCE = "binance"
 
 @dataclass
 class Config:
     """System configuration"""
+    default_broker: BrokerType = BrokerType.ALPACA
+    paper_trading: bool = True
+    log_level: str = "INFO"
+    data_dir: str = "data"
+    max_positions: int = 10
+    max_leverage: float = 1.0
+    min_trade_interval: int = 300  # 5 minutes in seconds
     initial_capital: float = 100000.0
     max_position_size: float = 0.1
     risk_free_rate: float = 0.02
