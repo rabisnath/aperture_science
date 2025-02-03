@@ -32,7 +32,7 @@ def check_dependencies():
         from strategy import StrategyConfig, StrategyFactory
         from portfolio_manager import PortfolioManager
         from back_of_house import LiveTrader
-        from risk import RiskEngine
+        from back_of_house import RiskEngine
         from trading_types import Config, BrokerType
         return True
     except ImportError as e:
